@@ -1,40 +1,47 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-srv
+  name: ingress-service
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
-  ingressClassName: nginx
   rules:
-    - host: posts.com
+    - host: ticketing.dev
       http:
         paths:
-          - path: /posts/create
-            pathType: Prefix
+          - path: /api/payments/?(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: posts-clusterip-srv
+                name: payments-srv
                 port:
-                  number: 4000
-          - path: /posts
-            pathType: Prefix
+                  number: 3000
+          - path: /api/users/?(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: query-clusterip-srv
+                name: auth-srv
                 port:
-                  number: 4002
-          - path: /posts/?(.*)/comments
-            pathType: Prefix
+                  number: 3000
+          - path: /api/tickets/?(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: comments-clusterip-srv
+                name: tickets-srv
                 port:
-                  number: 4001
+                  number: 3000
+          - path: /api/orders/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: orders-srv
+                port:
+                  number: 3000
           - path: /?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: client-clusterip-srv
+                name: client-srv
                 port:
                   number: 3000
