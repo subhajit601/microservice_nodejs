@@ -1,0 +1,59 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+deploy:
+  kubectl: {}
+build:
+  local:
+    push: false
+  artifacts:
+    - image: subhajit601/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: 'src/**/*.js'
+            dest: .
+    - image: subhajit601/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: '*.js'
+            dest: . 
+    - image: subhajit601/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: '*.js'
+            dest: .
+    - image: subhajit601/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: '*.js'
+            dest: .
+    - image: subhajit601/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: '*.js'
+            dest: .
+    - image: subhajit601/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: '*.js'
+            dest: .

@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1 #Replicas is a number of pods we want to create running a particular pods
+  selector: #Selectors basically looks all the selected pods thats are created. Find all the pods that match labels app: posts
+    matchLabels:
+      app: client
+  template: # Everything inside Template basically a pod speciication or information or pod config file
+    metadata:
+      labels:
+        app: client 
+    spec:
+      containers:
+        - name: client
+          image: subhajit601/client
+
